@@ -1,0 +1,21 @@
+front:
+    build: .
+    environment:
+    - VIRTUAL_HOST=~^front\..*\.xip\.io
+    links:
+    - mongo
+    ports:
+    - "3000"
+mongo:
+    image: mongo
+loadb:
+    image: jwilder/nginx-proxy
+    environment:
+    - DOCKER_CERT_PATH=/certs
+    - DOCKER_HOST=$DOCKER_HOST
+    - DOCKER_TLS_VERIFY=1
+    volumes:
+    - /var/run/docker.sock:/tmp/docker.sock
+    - $DOCKER_CERT_PATH:/certs
+    ports:
+    - "80:80"
